@@ -12,33 +12,37 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Set up Docker
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Step 3: Log in to DockerHub
       - name: DockerHub Login
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Step 4: Build and push Docker image
       - name: Build and push Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/wisecow-app:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/wisecow-app:latest
-
-      # Step 5: Set up kubectl
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
+        uses: docker/build-push-action@v5
         with:
-          version: 'latest'
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/wisecow-app:latest
 
-      # Step 6: Deploy to Kubernetes
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f k8s/wisecow-deployment.yaml
-          kubectl apply -f k8s/wisecow-service.yaml
+      # Step 5: (Optional) Deploy to Kubernetes
+      # Commented out because GitHub Actions runner has no cluster access
+      # Uncomment only if you connect to a real K8s cluster (e.g., via secret kubeconfig)
+      #
+      # - name: Set up kubectl
+      #   uses: azure/setup-kubectl@v3
+      #   with:
+      #     version: 'latest'
+      #
+      # - name: Deploy to Kubernetes
+      #   run: |
+      #     kubectl apply -f k8s/wisecow-deployment.yaml
+      #     kubectl apply -f k8s/wisecow-service.yaml
