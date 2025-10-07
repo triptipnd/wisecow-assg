@@ -33,9 +33,7 @@ Deploy the wisecow application as a k8s app
 
 ## Developer Notes (by Tripti)
 
-This repository was enhanced and containerized as part of the **Accuknox DevOps Trainee Practical Assessment**.
-
-**Key Contributions:**
+This repository was enhanced and containerized
 - Containerized the Wisecow application using a custom Dockerfile.
 - Created Kubernetes manifests for deployment and service exposure.
 - Integrated CI/CD automation with GitHub Actions.
