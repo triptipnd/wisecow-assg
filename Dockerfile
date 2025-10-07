@@ -1,8 +1,8 @@
 # Base image
 FROM ubuntu:20.04
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
+# Install dependencies (smaller image)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     fortune-mod \
     cowsay \
     bash \
@@ -18,7 +18,7 @@ COPY . /app
 # Make the script executable
 RUN chmod +x wisecow.sh
 
-# Expose the port (if script serves HTTP; else skip)
+# Expose the port
 EXPOSE 4499
 
 # Command to run the script
