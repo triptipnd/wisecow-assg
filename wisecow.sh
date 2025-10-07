@@ -44,3 +44,10 @@ main() {
 }
 
 main
+#!/bin/bash
+# app_health.sh
+if pgrep -f wisecow.sh > /dev/null; then
+    echo "Application is UP (process running)"
+else
+    echo "Application is DOWN"
+fi
